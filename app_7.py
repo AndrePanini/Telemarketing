@@ -7,16 +7,10 @@ import matplotlib.pyplot as plt
 from PIL                 import Image
 from io                  import BytesIO
 
-# Configuração inicial da página da aplicação
-st.set_page_config(page_title = 'Telemarketing analisys', \
-    page_icon = 'telmarketing_icon.png',
-    layout="wide",
-    initial_sidebar_state='expanded'
-)
-
 # Set no tema do seaborn para melhorar o visual dos plots
 custom_params = {"axes.spines.right": False, "axes.spines.top": False}
 sns.set_theme(style="ticks", rc=custom_params)
+
 
 # Função para ler os dados
 @st.cache(show_spinner= True, allow_output_mutation=True)
@@ -45,12 +39,19 @@ def to_excel(df):
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
     df.to_excel(writer, index=False, sheet_name='Sheet1')
-    writer.close()
+    writer.save()
     processed_data = output.getvalue()
     return processed_data
 
+
 # Função principal da aplicação
 def main():
+    # Configuração inicial da página da aplicação
+    st.set_page_config(page_title = 'Telemarketing analisys', \
+        page_icon = 'telmarketing_icon.png',
+        layout="wide",
+        initial_sidebar_state='expanded'
+    )
 
     # Título principal da aplicação
     st.write('# Telemarketing analisys')
@@ -219,8 +220,10 @@ def main():
 
         st.pyplot(plt)
 
+
 if __name__ == '__main__':
 	main()
+    
 
 
 
